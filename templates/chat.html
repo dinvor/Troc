@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Chat d'échange</h2>
+
+<p>
+    <a href="{{ url_for('products.product_detail', product_id=product_a['id']) }}">
+        {{ product_a['title'] }}
+    </a>
+    ↔
+    <a href="{{ url_for('products.product_detail', product_id=product_b['id']) }}">
+        {{ product_b['title'] }}
+    </a>
+</p>
+
+<div id="messages">
+    {% for msg in messages %}
+        <p><strong>{{ msg['sender_name'] }} :</strong> {{ msg['content'] }}</p>
+    {% endfor %}
+</div>
+
+<input id="msg" placeholder="Message">
+<button onclick="sendMessage()">Envoyer</button>
+
+<script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+
+<script>
+    const socket = io();
+    const room = {{ match['id'] }};
+    const sender = {{ user['id'] }};
+
+    socket.emit("join", { room });
+
+    socket.on("message", data => {
+        const box = document.getElementById("messages");
+        box.innerHTML += `<p><strong>${data.sender_name} :</strong> ${data.content}</p>`;
+    });
+
+    function sendMessage() {
+        const content = document.getElementById("msg").value;
+        socket.emit("message", {
+            room,
+            sender,
+            content
+        });
+        document.getElementById("msg").value = "";
+    }
+</script>
+
+{% endblock %}

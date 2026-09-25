@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Mes matchs</h2>
+
+{% if matches %}
+<ul>
+    {% for m in matches %}
+        <li>
+
+            <a href="{{ url_for('products.product_detail', product_id=m['product_a_id']) }}">
+                {{ m['product_a_title'] }}
+            </a>
+            (<a href="{{ url_for('auth.user_profile', user_id=m['owner_a_id']) }}">
+                {{ m['owner_a'] }}
+            </a>)
+
+            ↔
+
+            <a href="{{ url_for('products.product_detail', product_id=m['product_b_id']) }}">
+                {{ m['product_b_title'] }}
+            </a>
+            (<a href="{{ url_for('auth.user_profile', user_id=m['owner_b_id']) }}">
+                {{ m['owner_b'] }}
+            </a>)
+
+            — status : {{ m['status'] }}
+
+            {% if m['status'] == 'pending' %}
+                <a href="{{ url_for('matching.match_accept', match_id=m['id']) }}">Accepter</a>
+                <a href="{{ url_for('matching.match_reject', match_id=m['id']) }}">Refuser</a>
+
+            {% elif m['status'] == 'accepted' %}
+                <a href="{{ url_for('chat.chat', match_id=m['id']) }}">Ouvrir le chat</a>
+            {% endif %}
+
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Aucun match pour l'instant.</p>
+{% endif %}
+
+{% endblock %}

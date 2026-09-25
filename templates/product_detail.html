@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{{ product['title'] }}</h2>
+
+{% if product['image'] %}
+    <img src="{{ url_for('static', filename='uploads/' ~ product['image']) }}" width="200">
+{% endif %}
+
+<p>{{ product['description'] }}</p>
+
+<p>
+    Propriétaire :
+    <a href="{{ url_for('auth.user_profile', user_id=product['owner_id']) }}">
+        {{ product['owner_name'] }}
+    </a>
+</p>
+
+<p>Status : {{ product['status'] }}</p>
+
+{% if user %}
+    {% if user['id'] != product['owner_id'] and product['status'] == 'disponible' %}
+        <a href="{{ url_for('matching.match_product', product_b_id=product['id']) }}">
+            Proposer un échange
+        </a>
+    {% endif %}
+{% endif %}
+
+{% endblock %}

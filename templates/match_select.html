@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Proposer un échange pour : {{ product_b['title'] }}</h2>
+
+{% if my_products %}
+<form method="POST">
+    <label>Choisis un de tes produits :</label>
+    <select name="product_a_id">
+        {% for p in my_products %}
+            <option value="{{ p['id'] }}">{{ p['title'] }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit">Proposer le match</button>
+</form>
+{% else %}
+<p>Tu n'as aucun produit disponible.</p>
+{% endif %}
+
+{% endblock %}

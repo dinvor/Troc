@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Troc App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+    <h1>Troc de marchandises</h1>
+
+    <nav>
+        <a href="{{ url_for('products.products') }}">Produits</a>
+
+        {% if user %}
+            <a href="{{ url_for('products.product_add') }}">Ajouter un produit</a>
+            <a href="{{ url_for('matching.matches') }}">Mes matchs</a>
+            <span class="user">Connecté : {{ user['name'] }}</span>
+            <a href="{{ url_for('auth.logout') }}">Déconnexion</a>
+        {% else %}
+            <a href="{{ url_for('auth.login') }}">Connexion</a>
+            <a href="{{ url_for('auth.register') }}">Inscription</a>
+        {% endif %}
+    </nav>
+</header>
+
+<main>
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            <ul class="flash">
+                {% for msg in messages %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+</body>
+</html>

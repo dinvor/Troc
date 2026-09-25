@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Profil de {{ profile['name'] }}</h2>
+
+<p><strong>Email :</strong> {{ profile['email'] }}</p>
+
+{% if profile['bio'] %}
+    <p><strong>Description :</strong> {{ profile['bio'] }}</p>
+{% else %}
+    <p>Aucune description pour l'instant.</p>
+{% endif %}
+
+{% endblock %}

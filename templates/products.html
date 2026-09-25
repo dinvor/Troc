@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Produits disponibles</h2>
+
+{% if products %}
+<ul>
+    {% for p in products %}
+        <li>
+            <a href="{{ url_for('products.product_detail', product_id=p['id']) }}">
+                {{ p['title'] }}
+            </a>
+            <small>par {{ p['owner_name'] }}</small>
+        </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Aucun produit disponible.</p>
+{% endif %}
+
+{% endblock %}
